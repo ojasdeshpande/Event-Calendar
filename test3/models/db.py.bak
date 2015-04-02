@@ -66,7 +66,7 @@ db.auth_user.department.requires = IS_NOT_EMPTY(error_message=auth.messages.is_e
 db.auth_user.password.requires = CRYPT(key=auth.settings.hmac_key)
 db.auth_user.email.requires = (IS_EMAIL(error_message=auth.messages.invalid_email),
                                IS_NOT_IN_DB(db, db.auth_user.email))
-#auth.define_tables(migrate=settings.migrate)                           # creates all needed tables
+auth.define_tables(migrate=settings.migrate)                           # creates all needed tables
 auth.settings.mailer = mail                    # for user email verification
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False

@@ -17,4 +17,4 @@ db.define_table('t_events',
           label=T('Event Description')),
     Field('f_visible',type='string',
           label=T('Visible To')),
-    )
+    migrate=settings.migrate)
