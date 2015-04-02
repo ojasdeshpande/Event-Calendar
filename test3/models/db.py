@@ -40,6 +40,6 @@ db.define_table('user',
 db.user.webmail_id.requires = (IS_NOT_EMPTY(error_message='This field cannot be empty'),IS_NOT_IN_DB(db, db.user.webmail_id))
 db.user.user_type.requires = IS_NOT_EMPTY(error_message='This field cannot be empty')
 db.user.department.requires = IS_NOT_EMPTY(error_message='This field cannot be empty')
-db.user.password.requires = CRYPT(key='sha512:d7c965e8-0685-477a-baae-087e7372943f')
+db.user.password.requires = CRYPT(digest_alg='sha512',key='d7c965e8-0685-477a-baae-087e7372943f',salt=False)
 db.user.email.requires = (IS_EMAIL(error_message="This is an invalid email"),
                                IS_NOT_IN_DB(db, db.user.email))

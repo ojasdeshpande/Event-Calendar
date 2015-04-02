@@ -1,71 +1,39 @@
-# -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
-
-#########################################################################
-## This is a sample controller
-## - index is the default action of any application
-## - user is required for authentication and authorization
-## - download is for downloading files uploaded in the db (does streaming)
-## - api is an example of Hypermedia API support and access control
-#########################################################################
-
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+    redirect(URL('login'))
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    response.flash = T("Welcome to web2py!")
-    return dict(message=T('Hello World'))
+def login():
+    if session.curr_day:
+        session.curr_day = session.curr_day + 1
+        if session.curr_day <=30:
+            redirect(URL('mycal'))
+        else:
+            session.curr_day = None
+            session.curr_user = None
+            redirect(URL('login'))
+    else:
+        form = SQLFORM.factory(Field('webmail_id'),
+                               Field('password'),
+                               Field('user_type'),
+                               Field('remember_me', 'boolean')).process()
+        if request.vars.webmail_id and request.vars.password and request.vars.user_type:
+            passw = str(CRYPT(digest_alg='sha512',key='d7c965e8-0685-477a-baae-087e7372943f',salt=False)(request.vars.password)[0])
+            failure = db((db.user.webmail_id==request.vars.webmail_id) & (db.user.password==passw) & (db.user.user_type==request.vars.user_type)).isempty()
+            if failure == False:
+                    session.curr_user = request.vars.webmail_id
+                    session.curr_type = request.vars.user_type
+                    if(request.vars.remember_me):
+                        session.curr_day = 1
+                    redirect(URL('mycal'))
+            else:
+                    response.flash = 'Wrong credentials ! '
+        else:
+            response.flash = 'Enter credentials'
+        return locals()
 
-
-def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/manage_users (requires membership in
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    """
-    return dict(form=auth())
-
-
-@cache.action()
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
-
-
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
-
-
-@auth.requires_login() 
-def api():
-    """
-    this is example of API with access control
-    WEB2PY provides Hypermedia API (Collection+JSON) Experimental
-    """
-    from gluon.contrib.hypermedia import Collection
-    rules = {
-        '<tablename>': {'GET':{},'POST':{},'PUT':{},'DELETE':{}},
-        }
-    return Collection(db).process(request,response,rules)
+def mycal():
+    if session.curr_user==None:
+        redirect(URL('login'))
+    if session.curr_day==None:
+        redirect(URL('login'))
+    rows=db(db.t_events.owner==session.webmail_id).select()
+    return dict(rows=rows)
