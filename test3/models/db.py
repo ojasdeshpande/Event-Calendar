@@ -16,31 +16,9 @@ else:                                         # else use a normal relational dat
 ## if no need for session
 # session.forget()
 
-#########################################################################
-## Here is sample code if you need for 
-## - email capabilities
-## - authentication (registration, login, logout, ... )
-## - authorization (role based authorization)
-## - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)
-## - crud actions
-## (more options discussed in gluon/tools.py)
-#########################################################################
-
-from gluon.tools import *
-mail = Mail()                                  # mailer
-auth = Auth(globals(),db)                      # authentication/authorization
-crud = Crud(globals(),db)                      # for CRUD helpers using auth
-service = Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
-plugins = PluginManager()
-
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # your SMTP server
-mail.settings.sender = 'you@gmail.com'         # your email
-mail.settings.login = 'username:password'      # your credentials or None
-
-auth.settings.hmac_key = 'sha512:d7c965e8-0685-477a-baae-087e7372943f'   # before define_tables()
 
 ########################################
-db.define_table('auth_user',
+db.define_table('user',
     Field('webmail_id', type='string',
           label=T('Webmail')),
     Field('user_type',type='string',
@@ -56,53 +34,12 @@ db.define_table('auth_user',
           label=T('Password')),
    Field('year',type='integer',default=None,
          label=T('Year')),
-    #format='%(username)s',
-    migrate=settings.migrate)
+    )
 
 
-db.auth_user.webmail_id.requires = (IS_NOT_EMPTY(error_message=auth.messages.is_empty),IS_NOT_IN_DB(db, db.auth_user.webmail_id))
-db.auth_user.user_type.requires = IS_NOT_EMPTY(error_message=auth.messages.is_empty)
-db.auth_user.department.requires = IS_NOT_EMPTY(error_message=auth.messages.is_empty)
-db.auth_user.password.requires = CRYPT(key=auth.settings.hmac_key)
-db.auth_user.email.requires = (IS_EMAIL(error_message=auth.messages.invalid_email),
-                               IS_NOT_IN_DB(db, db.auth_user.email))
-#auth.define_tables(migrate=settings.migrate)                           # creates all needed tables
-auth.settings.mailer = mail                    # for user email verification
-auth.settings.registration_requires_verification = False
-auth.settings.registration_requires_approval = False
-auth.messages.verify_email = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['verify_email'])+'/%(key)s to verify your email'
-auth.settings.reset_password_requires_verification = True
-auth.messages.reset_password = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['reset_password'])+'/%(key)s to reset your password'
-
-#########################################################################
-## If you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
-## register with janrain.com, uncomment and customize following
-# from gluon.contrib.login_methods.rpx_account import RPXAccount
-# auth.settings.actions_disabled=['register','change_password','request_reset_password']
-# auth.settings.login_form = RPXAccount(request, api_key='...',domain='...',
-#    url = "http://localhost:8000/%s/default/user/login" % request.application)
-## other login methods are in gluon/contrib/login_methods
-#########################################################################
-
-crud.settings.auth = None                      # =auth to enforce authorization on crud
-
-#########################################################################
-## Define your tables below (or better in another model file) for example
-##
-## >>> db.define_table('mytable',Field('myfield','string'))
-##
-## Fields can be 'string','text','password','integer','double','boolean'
-##       'date','time','datetime','blob','upload', 'reference TABLENAME'
-## There is an implicit 'id integer autoincrement' field
-## Consult manual for more options, validators, etc.
-##
-## More API examples for controllers:
-##
-## >>> db.mytable.insert(myfield='value')
-## >>> rows=db(db.mytable.myfield=='value').select(db.mytable.ALL)
-## >>> for row in rows: print row.id, row.myfield
-#########################################################################
-
-mail.settings.server = settings.email_server
-mail.settings.sender = settings.email_sender
-mail.settings.login = settings.email_login
+db.user.webmail_id.requires = (IS_NOT_EMPTY(error_message='This field cannot be empty'),IS_NOT_IN_DB(db, db.user.webmail_id))
+db.user.user_type.requires = IS_NOT_EMPTY(error_message='This field cannot be empty')
+db.user.department.requires = IS_NOT_EMPTY(error_message='This field cannot be empty')
+db.user.password.requires = CRYPT(key='sha512:d7c965e8-0685-477a-baae-087e7372943f')
+db.user.email.requires = (IS_EMAIL(error_message="This is an invalid email"),
+                               IS_NOT_IN_DB(db, db.user.email))
