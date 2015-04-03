@@ -31,9 +31,13 @@ def login():
         return locals()
 
 def mycal():
-    if session.curr_user==None:
-        redirect(URL('login'))
-    if session.curr_day==None:
-        redirect(URL('login'))
-    rows=db(db.t_events.owner==session.webmail_id).select()
+    rows=db(db.t_events.owner==session.curr_user).select()
     return dict(rows=rows)
+
+def read_event():
+    record = db.t_events(request.args(0)) or redirect(URL('error'))
+    form=crud.read(db.t_events,record)
+    return dict(form=form)
+
+def error():
+    return dict()

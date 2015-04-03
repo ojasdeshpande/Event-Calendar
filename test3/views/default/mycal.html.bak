@@ -6,7 +6,14 @@
 {{extend 'layout.html'}}
 
 <h1>My calendar</h1>
-{{=day}}
+{{A('logout',_href='logout'}}
+</br></br>
+<select name="dropdown">
+  <option value="all">All</option>
+   <option value="private">Private</option>
+  <option value="department">Department</option>
+  <option value="hostel">Hostel</option>
+</select>
 <script type='text/javascript'>
   jQuery(document).ready(function() {
 
@@ -17,8 +24,28 @@
 
         $('#calendar').fullCalendar({
             editable: false,
+            events: [
+            {{for i,row in enumerate(rows):}}{{if i!=0:}},{{pass}}
+                {
+                    //title: '{{=row.f_location}}',
+                    //allDay: false,
+                    start: new Date('{{=row.f_start_time.strftime('%B %d, %Y %H:%M:%S')}}'),
+                    end: new Date('{{=row.f_end_time.strftime('%B %d, %Y %H:%M:%S')}}'),
+                    url: '{{=URL('read_event',args=row.id)}}'
+                }
+            {{pass}}
+            ]
         });
 
     });
+$('select[name="dropdown"]').change(function(){
+  
+    if ($(this).val() == "department")
+        alert("These are the department events");
+    if ($(this).val() == "private")
+        alert("These are the private events");
+    if ($(this).val() == "hostel")
+        alert("These are the hostel events");
+});
 </script>
 <div id='calendar'></div>

@@ -16,6 +16,8 @@ else:                                         # else use a normal relational dat
 ## if no need for session
 # session.forget()
 
+from gluon.tools import *
+crud = Crud(globals(),db)
 
 ########################################
 db.define_table('user',
