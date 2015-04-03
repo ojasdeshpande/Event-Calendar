@@ -32,7 +32,17 @@ def login():
         else:
             response.flash = 'Enter credentials'
         return locals()
-
+def create_event():
+    event_form = SQLFORM.factory(Field('start_time','datetime'),
+                               Field('end_time','datetime'),
+                               Field('location','string'),
+                               Field('description','text'),
+                               Field('visibility')).process()
+    if request.vars.start_time and request.vars.end_time and request.vars.visibility:
+        db.t_events.insert(owner=session.curr_user,f_start_time=request.vars.start_time,f_end_time=request.vars.end_time,f_location=request.vars.location,f_visible=request.vars.visibility)
+    else:
+        response.flash = 'Enter event details'
+    return locals()
 def mycal():
     return dict()
 
