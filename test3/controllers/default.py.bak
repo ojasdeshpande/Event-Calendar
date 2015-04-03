@@ -21,6 +21,9 @@ def login():
             if failure == False:
                     session.curr_user = request.vars.webmail_id
                     session.curr_type = request.vars.user_type
+                    rows = db(db.user.webmail_id==session.curr_user).select() 
+                    session.curr_dept = rows[0].department
+                    session.curr_hostel = rows[0].hostel
                     if(request.vars.remember_me):
                         session.curr_day = 1
                     redirect(URL('mycal'))
@@ -31,9 +34,9 @@ def login():
         return locals()
 
 def mycal():
-    rows=db(db.t_events.owner==session.curr_user).select()
-    return dict(rows=rows)
+    return dict()
 
+#read an event by clicking on it
 def read_event():
     record = db.t_events(request.args(0)) or redirect(URL('error'))
     form=crud.read(db.t_events,record)
@@ -41,3 +44,24 @@ def read_event():
 
 def error():
     return dict()
+
+# all events added by the user logged in
+def private_event():
+    rows=db(db.t_events.owner==session.curr_user).select()
+    return dict(rows=rows)
+
+# all events is of a particular department and user is of that department
+def department_event():
+    rows=db(db.t_events.f_visible==session.curr_dept).select()
+    return dict(rows=rows)
+
+# all events of a particular hostel and user is of that hostel
+def hostel_event():
+    rows=db(db.t_events.f_visible==session.curr_hostel).select()
+    return dict(rows=rows)
+
+def all():
+    rows1 =db(db.t_events.owner==session.curr_user).select()
+    rows2 = db(db.t_events.f_visible==session.curr_dept).select()
+    rows3 = db(db.t_events.f_visible==session.curr_hostel).select()
+    return dict(rows=rows1 | rows2 | rows3) # using | will remove all the duplicates

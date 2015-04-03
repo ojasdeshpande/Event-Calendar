@@ -32,5 +32,6 @@ DEVELOPMENT_MENU = True
 ## provide shortcuts for development. remove in production
 #########################################################################
 
+if DEVELOPMENT_MENU: _()
 
 if "auth" in locals(): auth.wikimenu()

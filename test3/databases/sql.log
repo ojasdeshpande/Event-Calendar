@@ -1,4 +1,4 @@
-timestamp: 2015-04-02T19:51:33.739873
+timestamp: 2015-04-03T21:50:29.101934
 CREATE TABLE auth_user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name CHAR(128),
@@ -10,21 +10,21 @@ CREATE TABLE auth_user(
     registration_id CHAR(512)
 );
 success!
-timestamp: 2015-04-02T19:51:33.868311
+timestamp: 2015-04-03T21:50:29.271841
 CREATE TABLE auth_group(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role CHAR(512),
     description TEXT
 );
 success!
-timestamp: 2015-04-02T19:51:33.979332
+timestamp: 2015-04-03T21:50:29.374682
 CREATE TABLE auth_membership(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
     group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
 );
 success!
-timestamp: 2015-04-02T19:51:34.108743
+timestamp: 2015-04-03T21:50:29.497783
 CREATE TABLE auth_permission(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
@@ -33,7 +33,7 @@ CREATE TABLE auth_permission(
     record_id INTEGER
 );
 success!
-timestamp: 2015-04-02T19:51:34.232634
+timestamp: 2015-04-03T21:50:29.621151
 CREATE TABLE auth_event(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_stamp TIMESTAMP,
@@ -43,7 +43,7 @@ CREATE TABLE auth_event(
     description TEXT
 );
 success!
-timestamp: 2015-04-02T19:51:34.365827
+timestamp: 2015-04-03T21:50:29.754461
 CREATE TABLE auth_cas(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
@@ -53,40 +53,7 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
-timestamp: 2015-04-02T19:55:00.799480
-ALTER TABLE auth_user ADD user_type CHAR(512);
-timestamp: 2015-04-02T19:55:00.957533
-ALTER TABLE auth_user ADD year INTEGER;
-timestamp: 2015-04-02T19:55:01.101945
-ALTER TABLE auth_user ADD department CHAR(512);
-timestamp: 2015-04-02T19:55:01.236530
-ALTER TABLE auth_user ADD webmail_id CHAR(512);
-timestamp: 2015-04-02T19:55:01.349869
-ALTER TABLE auth_user ADD hostel CHAR(512);
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-timestamp: 2015-04-02T20:06:54.553813
+timestamp: 2015-04-03T22:09:50.357818
 CREATE TABLE user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     webmail_id CHAR(512),
@@ -98,7 +65,7 @@ CREATE TABLE user(
     year INTEGER
 );
 success!
-timestamp: 2015-04-02T20:10:54.566595
+timestamp: 2015-04-03T22:09:50.593854
 CREATE TABLE t_events(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     owner CHAR(512),

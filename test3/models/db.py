@@ -18,6 +18,8 @@ else:                                         # else use a normal relational dat
 
 from gluon.tools import *
 crud = Crud(globals(),db)
+service = Service()
+plugins = PluginManager()
 
 ########################################
 db.define_table('user',
