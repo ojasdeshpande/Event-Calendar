@@ -1,8 +1,12 @@
 #drop{
     float:right;
-    margin-top: -40px;
 }
 
 #month{
     margin-top: 30px;
+}
+
+.options{
+    float: right;
+    margin-right: 65px;
 }

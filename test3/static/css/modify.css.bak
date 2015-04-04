@@ -1,8 +1,16 @@
 #drop{
-    float:left;
-  
+    float:right;
 }
 
 #month{
     margin-top: 30px;
+}
+
+.options{
+    float: right;
+    margin-right: 65px;
+}
+
+a:link{
+    color: #D0D0D0;
 }

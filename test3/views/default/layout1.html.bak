@@ -45,6 +45,7 @@
   response.files.insert(1,URL('static','css/bootstrap.min.css'))
   response.files.insert(2,URL('static','css/bootstrap-responsive.min.css'))
   response.files.insert(3,URL('static','css/web2py_bootstrap.css'))
+  response.files.insert(4,URL('static','css/modify.css'))
   }}
 
   {{include 'web2py_ajax.html'}}
@@ -70,7 +71,13 @@
   <div class="navbar navbar-inverse">
     <div class="flash">{{=response.flash or ''}}</div>
     <div class="navbar-inner">
-      <div class="container">
+      <div class="options">
+          <table>
+              <tr>
+              <td><a style="color:#D0D0D0">Create Event</a></td>
+              <td><a style="color:#D0D0D0 " href='{{=URL('logout')}}'>logout</a></td>
+              </tr>
+          </table>
       </div>
     </div>
   </div><!--/top navbar -->

@@ -12,7 +12,7 @@ def login():
             redirect(URL('login'))
     else:
         form = SQLFORM.factory(Field('webmail_id'),
-                               Field('password'),
+                               Field('password',type='password'),
                                Field('user_type'),
                                Field('remember_me', 'boolean')).process()
         if request.vars.webmail_id and request.vars.password and request.vars.user_type:
@@ -32,22 +32,16 @@ def login():
         else:
             response.flash = 'Enter credentials'
         return locals()
-def create_event():
-    event_form = SQLFORM.factory(Field('start_time','datetime'),
-                               Field('end_time','datetime'),
-                               Field('location','string'),
-                               Field('description','text'),
-                               Field('visibility')).process()
-    if request.vars.start_time and request.vars.end_time and request.vars.visibility:
-        db.t_events.insert(owner=session.curr_user,f_start_time=request.vars.start_time,f_end_time=request.vars.end_time,f_location=request.vars.location,f_visible=request.vars.visibility)
-    else:
-        response.flash = 'Enter event details'
-    return locals()
+
 def mycal():
+    if session.curr_user==None:
+        redirect('login')
     return dict()
 
 #read an event by clicking on it
 def read_event():
+    if session.curr_user==None:
+        redirect('login')
     record = db.t_events(request.args(0)) or redirect(URL('error'))
     form=crud.read(db.t_events,record)
     return dict(form=form)
@@ -57,20 +51,28 @@ def error():
 
 # all events added by the user logged in
 def private_event():
+    if session.curr_user==None:
+        redirect('login')
     rows=db(db.t_events.owner==session.curr_user).select()
     return dict(rows=rows)
 
 # all events is of a particular department and user is of that department
 def department_event():
+    if session.curr_user==None:
+        redirect('login')
     rows=db(db.t_events.f_visible==session.curr_dept).select()
     return dict(rows=rows)
 
 # all events of a particular hostel and user is of that hostel
 def hostel_event():
+    if session.curr_user==None:
+        redirect('login')
     rows=db(db.t_events.f_visible==session.curr_hostel).select()
     return dict(rows=rows)
 
 def all():
+    if session.curr_user==None:
+        redirect('login')
     rows1 =db(db.t_events.owner==session.curr_user).select() # private events
     rows2 = db(db.t_events.f_visible==session.curr_dept).select() # department events
     rows3 = db(db.t_events.f_visible==session.curr_hostel).select() # hostel events
@@ -79,3 +81,8 @@ def all():
     # now we want those events in which user has been specifically added by some other user
     
     return dict(rows=rows1 | rows2 | rows3) # using | will remove all the duplicates
+
+def logout():
+    session.curr_user = None
+    session.curr_day = None
+    redirect('login')

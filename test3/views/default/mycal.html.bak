@@ -17,7 +17,7 @@
 </div>
 <script type='text/javascript'>
      jQuery(document).ready(function(){
-         document.location.href = '{{=URL('hey_baby')}}'
+         document.location.href = '{{=URL('private_event')}}'
     });
 
 </script>

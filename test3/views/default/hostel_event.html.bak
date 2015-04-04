@@ -6,7 +6,6 @@
 {{response.files.append(URL(r=request,c='static',f='css/modify.css'))}}
 {{extend 'layout.html'}}
 
-<h1>My calendar</h1>
 <div id='drop'>
 <select name="dropdown">
   <option value ="all">All</option>
@@ -49,6 +48,8 @@
             document.location.href = '{{=URL('department_event')}}'
         if ($(this).val() == "hostel")
             document.location.href = '{{=URL('hostel_event')}}'
+        if ($(this).val() == "all")
+            document.location.href = '{{=URL('all')}}'
     });
 </script>
 <div id='calendar'></div>

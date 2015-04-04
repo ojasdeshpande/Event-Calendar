@@ -4,9 +4,8 @@
 {{response.files.append(URL(r=request,c='static',f='js/fullcalendar.min.js'))}}
 {{response.files.append(URL(r=request,c='static',f='css/fullcalendar.css'))}}
 {{response.files.append(URL(r=request,c='static',f='css/modify.css'))}}
-{{extend 'layout.html'}}
+{{extend 'default/layout1.html'}}
 
-<h1>My calendar</h1>
 <div id='drop'>
 <select name="dropdown">
   <option value ="all">All</option>
