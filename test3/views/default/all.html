@@ -9,9 +9,10 @@
 <div id='drop'>
     <select name="dropdown">
       <option value ="all", selected="selected">All</option>
-       <option value="private">Private</option>
+       <option value="private">My Events</option>
       <option value="department">Department</option>
       <option value="hostel">Hostel</option>
+      <option value="invites">Invites</option>
     </select>
 </div>
 
@@ -50,6 +51,8 @@
             document.location.href = '{{=URL('hostel_event')}}'
         if ($(this).val() == "all")
             document.location.href = '{{=URL('all')}}'
+        if ($(this).val() == "invites")
+            document.location.href = '{{=URL('invites')}}'
     });
 </script>
 <div id='calendar'></div>

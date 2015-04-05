@@ -74,7 +74,9 @@
       <div class="options">
           <table>
               <tr>
-              <td><a style="color:#D0D0D0">Create Event</a></td>
+              <td style="color:white">Welcome {{=curr_user}}</td>
+              <td><a style="color:#D0D0D0 " href='{{=URL('all')}}'>Home</a></td>
+              <td><a style="color:#D0D0D0" href='{{=URL('create_event')}}'>Create Event</a></td>
               <td><a style="color:#D0D0D0 " href='{{=URL('logout')}}'>logout</a></td>
               </tr>
           </table>

@@ -7,13 +7,27 @@
 {{extend 'default/layout1.html'}}
 
 <div id='drop'>
-<select name="dropdown">
-  <option value ="all">All</option>
-   <option value="private">Private</option>
-  <option value="department">Department</option>
-  <option value="hostel", selected="selected">Hostel</option>
-</select>
+    <select name="dropdown">
+      <option value ="all">All</option>
+       <option value="private">My Events</option>
+      <option value="department">Department</option>
+      <option value="hostel", selected="selected">Hostel</option>
+      <option value="invites">Invites</option>
+    </select>
 </div>
+
+{{
+if len(rows)==0:
+    allrows=db(db.t_events.id=="").select()
+else:
+    allrows=db(db.t_events.id==rows[0]).select()
+    for i in range(1,len(rows)):
+        row1=db(db.t_events.id==rows[i]).select()
+        allrows = allrows | row1
+    pass
+pass
+}}
+
 
 <script type='text/javascript'>
   jQuery(document).ready(function() {
@@ -28,7 +42,7 @@
         $('#calendar').fullCalendar({
             editable: false,
             events: [
-            {{for i,row in enumerate(rows):}}{{if i!=0:}},{{pass}}
+            {{for i,row in enumerate(allrows):}}{{if i!=0:}},{{pass}}
                 {
                     allDay: false,
                     start: new Date('{{=row.f_start_time.strftime('%B %d, %Y %H:%M:%S')}}'),
@@ -40,7 +54,7 @@
         });
 
     });
-      $('select[name="dropdown"]').change(function() {
+     $('select[name="dropdown"]').change(function() {
 
         if ($(this).val() == "private")
              document.location.href = '{{=URL('private_event')}}'
@@ -50,6 +64,8 @@
             document.location.href = '{{=URL('hostel_event')}}'
         if ($(this).val() == "all")
             document.location.href = '{{=URL('all')}}'
+       if ($(this).val() == "invites")
+            document.location.href = '{{=URL('invites')}}'
     });
 </script>
 <div id='calendar'></div>

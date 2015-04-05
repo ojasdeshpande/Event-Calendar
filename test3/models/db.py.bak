@@ -37,7 +37,7 @@ db.define_table('user',
           readable=False,
           label=T('Password')),
    Field('year',type='integer',default=None,
-         label=T('Year'))
+         label=T('Year')),
     )
 
 

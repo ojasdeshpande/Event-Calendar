@@ -76,3 +76,13 @@ CREATE TABLE t_events(
     f_visible CHAR(512)
 );
 success!
+timestamp: 2015-04-04T02:06:00.087599
+ALTER TABLE t_events ADD owner_type CHAR(512);
+success!
+timestamp: 2015-04-04T04:13:50.089344
+CREATE TABLE t_permissions(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    webmail CHAR(512),
+    permissions CHAR(512)
+);
+success!

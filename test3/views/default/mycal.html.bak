@@ -6,7 +6,6 @@
 {{response.files.append(URL(r=request,c='static',f='css/modify.css'))}}
 {{extend 'layout.html'}}
 
-<h1>My calendar</h1>
 <div id='drop'>
 <select name="dropdown">
   <option value ="all">All</option>
@@ -17,7 +16,7 @@
 </div>
 <script type='text/javascript'>
      jQuery(document).ready(function(){
-         document.location.href = '{{=URL('private_event')}}'
+         document.location.href = '{{=URL('all')}}'
     });
 
 </script>

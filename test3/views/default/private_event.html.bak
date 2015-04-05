@@ -4,14 +4,15 @@
 {{response.files.append(URL(r=request,c='static',f='js/fullcalendar.min.js'))}}
 {{response.files.append(URL(r=request,c='static',f='css/fullcalendar.css'))}}
 {{response.files.append(URL(r=request,c='static',f='css/modify.css'))}}
-{{extend 'layout1.html'}}
+{{extend 'default/layout1.html'}}
 
 <div id='drop'>
     <select name="dropdown">
       <option value ="all">All</option>
-       <option value="private", selected="selected">Private</option>
+       <option value="private", selected="selected">My Events</option>
       <option value="department">Department</option>
       <option value="hostel">Hostel</option>
+      <option value="invites">Invites</option>
     </select>
 </div>
 
@@ -50,6 +51,8 @@
             document.location.href = '{{=URL('hostel_event')}}'
         if ($(this).val() == "all")
             document.location.href = '{{=URL('all')}}'
+       if ($(this).val() == "invites")
+            document.location.href = '{{=URL('invites')}}'
     });
 </script>
 <div id='calendar'></div>

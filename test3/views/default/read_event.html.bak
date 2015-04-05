@@ -3,3 +3,5 @@
 <h2>Read appointment</h2>
 {{=A(T('edit appointment'),_href=URL('appointment_update',args=request.args(0)))}}
 <br/>
+
+{{=form}}
